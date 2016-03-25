@@ -1,16 +1,22 @@
 application:
     build: code
-    volumes:
-        - ./symfony:/var/www/symfony
-        - ./logs/symfony:/var/www/symfony/app/logs
+#    volumes:
+#        - ./symfony:/var/www/symfony
+#        - ./logs/symfony:/var/www/symfony/app/logs
     tty: true
 phpmyadmin:
     build: phpmyadmin
     tty: true
+sftp:
+    build: sftp
+    ports:
+        - "2222:22"
+    volumes_from:
+        - application
 db:
     image: mysql
     ports:
-        - 3306:3306
+        - "3306:3306"
     environment:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_DATABASE: symfony
@@ -19,7 +25,7 @@ db:
 php:
     build: php-fpm
     ports:
-        - 9000:9000
+        - "9000:9000"
     volumes_from:
         - application
         - phpmyadmin
@@ -28,11 +34,11 @@ php:
 nginx:
     build: nginx
     ports:
-        - 80:80
+        - "80:80"
     links:
         - php
     volumes_from:
         - application
         - phpmyadmin
-    volumes:
-        - ./logs/nginx/:/var/log/nginx
+#    volumes:
+#        - ./logs/nginx/:/var/log/nginx
