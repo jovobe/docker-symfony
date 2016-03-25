@@ -4,6 +4,9 @@ application:
         - ./symfony:/var/www/symfony
         - ./logs/symfony:/var/www/symfony/app/logs
     tty: true
+phpmyadmin:
+    build: phpmyadmin
+    tty: true
 db:
     image: mysql
     ports:
@@ -19,6 +22,7 @@ php:
         - 9000:9000
     volumes_from:
         - application
+        - phpmyadmin
     links:
         - db
 nginx:
@@ -29,5 +33,6 @@ nginx:
         - php
     volumes_from:
         - application
+        - phpmyadmin
     volumes:
         - ./logs/nginx/:/var/log/nginx
