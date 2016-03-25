@@ -1,8 +1,5 @@
 application:
     build: code
-#    volumes:
-#        - ./symfony:/var/www/symfony
-#        - ./logs/symfony:/var/www/symfony/app/logs
     tty: true
 phpmyadmin:
     build: phpmyadmin
@@ -40,5 +37,3 @@ nginx:
     volumes_from:
         - application
         - phpmyadmin
-#    volumes:
-#        - ./logs/nginx/:/var/log/nginx
