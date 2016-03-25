@@ -1,5 +1,5 @@
-FROM debian:jessie
+FROM ubuntu:15.10
 
-MAINTAINER Vincent Composieux <vincent.composieux@gmail.com>
+MAINTAINER Johan M. von Behren <johan@vonbehren.eu>
 
 VOLUME /var/www/symfony
