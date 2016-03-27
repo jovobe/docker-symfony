@@ -7,7 +7,7 @@ phpmyadmin:
 sftp:
     build: sftp
     ports:
-        - "2222:22"
+        - "2222:2222"
     volumes_from:
         - application
 db:

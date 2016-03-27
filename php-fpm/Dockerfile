@@ -17,10 +17,14 @@ RUN apt-get update && apt-get install -y wget \
   && chmod +x phpunit-old.phar \
   && mv phpunit-old.phar /usr/local/bin/phpunit
 
+RUN mkdir /var/www && chown -R www-data:www-data /var/www
+
 ADD symfony.ini /etc/php5/fpm/conf.d/
 ADD symfony.ini /etc/php5/cli/conf.d/
 
 ADD symfony.pool.conf /etc/php5/fpm/pool.d/
+
+RUN chsh -s /bin/bash www-data
 
 CMD ["php5-fpm", "-F"]
 

@@ -2,15 +2,20 @@ FROM ubuntu:15.10
 
 MAINTAINER Johan M. von Behren <johan@vonbehren.eu>
 
-RUN apt-get update && apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
+RUN apt-get update && apt-get install -y proftpd-basic openssh-client
+
+RUN chsh -s /bin/bash www-data
 RUN echo "www-data:symfony" | chpasswd
 
-ADD sshd_config /etc/ssh/sshd_config
-ADD sftp.sh /sftp.sh
+RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa \
+  && ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
 
-RUN chmod +x /sftp.sh
+ADD sftp.conf /etc/proftpd/conf.d/sftp.conf
+ADD performance.conf /etc/proftpd/conf.d/performance.conf
 
-EXPOSE 22
+RUN sed -i "s/\"Debian\"/\"symfony.dev\"/" /etc/proftpd/proftpd.conf \
+  && sed -i "s/# DefaultRoot/DefaultRoot/" /etc/proftpd/proftpd.conf
 
-CMD ["/sftp.sh"]
+EXPOSE 2222
+
+CMD ["proftpd", "--nodaemon"]
